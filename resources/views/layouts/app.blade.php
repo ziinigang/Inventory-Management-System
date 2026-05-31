@@ -59,26 +59,26 @@
                 <i class="bi bi-speedometer2 me-2"></i>Dashboard
             </x-nav-link>
 
-            <x-nav-link href="{{ route('products.index') }}" :active="request()->routeIs('products.*')">
+          {{-- <x-nav-link href="{{ route('products.index') }}" :active="request()->routeIs('products.*')">
                 <i class="bi bi-box me-2"></i>Products
-            </x-nav-link>
+            </x-nav-link> --}}
 
-            <x-nav-link href="{{ route('suppliers.index') }}" :active="request()->routeIs('suppliers.*')">
-                <i class="bi bi-truck me-2"></i>Suppliers
-            </x-nav-link>
+           {{-- <x-nav-link href="{{ route('suppliers.index') }}" :active="request()->routeIs('suppliers.*')">
+                <i class="bi bi-truck me-2"></i>Suppliers 
+            </x-nav-link> --}}
 
-            <x-nav-link href="{{ route('inventory.index') }}" :active="request()->routeIs('inventory.*')">
+          {{--  <x-nav-link href="{{ route('inventory.index') }}" :active="request()->routeIs('inventory.*')">
                 <i class="bi bi-clipboard-data me-2"></i>Inventory
-            </x-nav-link>
+            </x-nav-link> --}}
 
-            <x-nav-link href="{{ route('stock-movements.index') }}" :active="request()->routeIs('stock-movements.*')">
+           {{-- <x-nav-link href="{{ route('stock-movements.index') }}" :active="request()->routeIs('stock-movements.*')">
                 <i class="bi bi-arrow-left-right me-2"></i>Stock Movements
-            </x-nav-link>
+            </x-nav-link>   --}}
 
             @if(auth()->user()->isAdmin())
-            <x-nav-link href="{{ route('reports.index') }}" :active="request()->routeIs('reports.*')">
+         {{--   <x-nav-link href="{{ route('reports.index') }}" :active="request()->routeIs('reports.*')">
                 <i class="bi bi-file-earmark-bar-graph me-2"></i>Reports
-            </x-nav-link>
+            </x-nav-link> --}}
             @endif
         </nav>
 
