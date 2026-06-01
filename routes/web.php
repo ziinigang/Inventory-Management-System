@@ -7,6 +7,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\StockMovementController;
+use App\Http\Controllers\ReportController;
+
 
 // yung mga page na pwedeng buksan kahit hindi pa naka-login(public pages)
 // yung login page mismo ang nasa loob nito
@@ -48,6 +50,35 @@ Route::middleware('auth')->group(function () {
          // Stock Movements (only index, create, store, show — no edit/update/destroy)
     Route::resource('stock-movements', StockMovementController::class)
          ->only(['index', 'create', 'store', 'show']);
+
+    // Reports (admin only)
+     Route::middleware(['auth', 'admin'])->prefix('reports')->name('reports.')->group(function () {
+    Route::get('/',  [ReportController::class, 'index'])->name('index');
+
+    // Inventory exports
+    Route::get('/inventory/pdf',   [ReportController::class, 'inventoryPdf'])
+         ->name('inventory.pdf');
+    Route::get('/inventory/excel', [ReportController::class, 'inventoryExcel'])
+         ->name('inventory.excel');
+    Route::get('/inventory/csv',   [ReportController::class, 'inventoryCsv'])
+         ->name('inventory.csv');
+
+    // Stock movements exports
+    Route::get('/movements/pdf',   [ReportController::class, 'movementsPdf'])
+         ->name('movements.pdf');
+    Route::get('/movements/excel', [ReportController::class, 'movementsExcel'])
+         ->name('movements.excel');
+    Route::get('/movements/csv',   [ReportController::class, 'movementsCsv'])
+         ->name('movements.csv');
+
+    // Suppliers exports
+    Route::get('/suppliers/pdf',   [ReportController::class, 'suppliersPdf'])
+         ->name('suppliers.pdf');
+    Route::get('/suppliers/excel', [ReportController::class, 'suppliersExcel'])
+         ->name('suppliers.excel');
+    Route::get('/suppliers/csv',   [ReportController::class, 'suppliersCsv'])
+         ->name('suppliers.csv');
+});
 });
 
 // pag nag-open ng website without specific page, diretso sa dashboard
