@@ -33,7 +33,7 @@ class ReportController extends Controller
                                       now()->month)->count(),
         ];
 
-        return view('reports.pdf.index', compact('summary'));
+        return view('reports.index', compact('summary'));
     }
 
     // ─── INVENTORY REPORTS ──────────────────────────────────────────────────
