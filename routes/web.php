@@ -15,15 +15,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
-use App\Http\Controllers\ProductController;
 
-Route::middleware('auth')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-    // Products resource routes (generates all 7 RESTful routes)
-    Route::resource('products', ProductController::class);
-});
 // Redirect root to dashboard
 Route::get('/', function () {
     return redirect()->route('dashboard');

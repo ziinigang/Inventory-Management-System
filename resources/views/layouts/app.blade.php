@@ -59,9 +59,9 @@
                 <i class="bi bi-speedometer2 me-2"></i>Dashboard
             </x-nav-link>
 
-          <x-nav-link href="{{ route('products.index') }}" :active="request()->routeIs('products.*')">
+          {{-- <x-nav-link href="{{ route('products.index') }}" :active="request()->routeIs('products.*')">
                 <i class="bi bi-box me-2"></i>Products
-            </x-nav-link> 
+            </x-nav-link> --}}
 
            {{-- <x-nav-link href="{{ route('suppliers.index') }}" :active="request()->routeIs('suppliers.*')">
                 <i class="bi bi-truck me-2"></i>Suppliers 
