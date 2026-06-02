@@ -10,12 +10,12 @@ use Illuminate\Validation\ValidationException;
 
 class StockMovementController extends Controller
 {
-    // dito makikita ang lahat ng stock movements, may search at filter din
+    // dito makikita ang lahat ng stock movements, w/search & filter
     public function index(Request $request)
     {
         $query = StockMovement::with(['product', 'user']);
 
-        // kapag naghanap ang user ng produkto
+        // search by product name o sku
         if ($request->filled('search')) {
             $query->whereHas('product', function ($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->search . '%')
@@ -23,24 +23,24 @@ class StockMovementController extends Controller
             });
         }
 
-        // kapag nag-filter ng uri ng movement, in out o adjustment
+        // filter by movement type: in, out o adjustment
         if ($request->filled('type')) {
             $query->where('type', $request->type);
         }
 
-        // kapag nag-filter ng petsa ng simula
+        // filter by date range — start ng petsa
         if ($request->filled('date_from')) {
             $query->whereDate('created_at', '>=', $request->date_from);
         }
 
-        // kapag nag-filter ng petsa ng katapusan
+        // filter by date range — end ng petsa
         if ($request->filled('date_to')) {
             $query->whereDate('created_at', '<=', $request->date_to);
         }
 
         $movements = $query->latest()->paginate(15);
 
-        // mga bilang na ipapakita sa summary cards
+        // summary stats
         $stats = [
             // kabuuang units na pumasok
             'total_in'  => StockMovement::where('type', 'in')->sum('quantity'),
@@ -53,13 +53,13 @@ class StockMovementController extends Controller
         return view('stock-movements.index', compact('movements', 'stats'));
     }
 
-    // dito ipapakita ang form para mag-record ng bagong movement
-    // kapag may product_id sa URL, awtomatiko na itong mapipili sa form
+    // dito ipapakita ang form para mag-record ng new movement
+    // kapag may product_id sa URL, matic na to mapipili sa form
     public function create(Request $request)
     {
         $products = Product::with('inventory')->orderBy('name')->get();
 
-        // tingnan kung may pinili nang produkto mula sa inventory page
+        // tingnan kung may napili na na produkto mula sa inventory page
         $selectedProduct = $request->filled('product_id')
                            ? Product::with('inventory')->find($request->product_id)
                            : null;
@@ -67,7 +67,7 @@ class StockMovementController extends Controller
         return view('stock-movements.create', compact('products', 'selectedProduct'));
     }
 
-    // dito ini-save ang movement at ina-update ang stock ng produkto
+    // dito naman ang pag store ang new movement and update inventory
     public function store(Request $request)
     {
         // i-check muna kung tama ang mga pinasok ng user
@@ -81,7 +81,7 @@ class StockMovementController extends Controller
         $product   = Product::with('inventory')->findOrFail($validated['product_id']);
         $inventory = $product->inventory;
 
-        // siguraduhin na ang produkto ay may inventory record bago mag-proceed
+        // make sure na ang product ay may inventory record bago mag-proceed
         if (!$inventory) {
             return back()->withErrors([
                 'product_id' => 'Ang produktong ito ay walang inventory record. Makipag-ugnayan sa admin.',
@@ -91,7 +91,7 @@ class StockMovementController extends Controller
         $currentQty = $inventory->quantity;
         $moveQty    = (int) $validated['quantity'];
 
-        // alamin kung magkano ang magiging bagong quantity
+        // inaalam kung magkano ang magiging bagong quantity
         if ($validated['type'] === 'in') {
             // stock in, dagdag lang sa current
             $newQty = $currentQty + abs($moveQty);
@@ -107,10 +107,10 @@ class StockMovementController extends Controller
                 ]);
             }
         } else {
-            // adjustment, pwedeng positibo o negatibo
+            // adjustment, pwedeng + or - depende sa input ng user
             $newQty = $currentQty + $moveQty;
 
-            // huwag payagan kung magiging negatibo ang stock
+            // huwag payagan kung magiging negative ang stock
             if ($newQty < 0) {
                 throw ValidationException::withMessages([
                     'quantity' => "Magiging negatibo ang stock kapag itinuloy ito. 
@@ -119,7 +119,7 @@ class StockMovementController extends Controller
             }
         }
 
-        // i-save na ang movement sa database
+        // isave na ang movement sa database
         StockMovement::create([
             'product_id' => $validated['product_id'],
             'user_id'    => auth()->id(),
@@ -128,7 +128,7 @@ class StockMovementController extends Controller
             'reason'     => $validated['reason'],
         ]);
 
-        // i-update na rin ang quantity sa inventories table
+        // update na rin ang quantity sa inventories table
         $inventory->update(['quantity' => $newQty]);
 
         $typeLabel = ucfirst($validated['type']);
@@ -137,14 +137,13 @@ class StockMovementController extends Controller
                    "{$typeLabel} ng {$moveQty} units para sa '{$product->name}' ay naitala na. Bagong stock: {$newQty}.");
     }
 
-    // dito makikita ang detalye ng isang movement
+    // dito makikita ang details ng isang movement
     public function show(StockMovement $stockMovement)
     {
         $stockMovement->load(['product.inventory', 'user']);
         return view('stock-movements.show', compact('stockMovement'));
     }
 
-    // hindi na pwedeng i-edit o i-delete ang movements
-    // permanente sila para hindi mawala ang audit trail
+    // Movements cannot be edited or deleted — they are a permanent audit trail
     // kung may mali, gumawa na lang ng bagong movement para itama
 }

@@ -23,7 +23,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Products
     // lahat ng CRUD routes para sa management ng mga products
     Route::resource('products', ProductController::class);
 
@@ -35,18 +34,12 @@ Route::middleware('auth')->group(function () {
                  [SupplierController::class, 'toggleStatus'])
          ->name('suppliers.toggle-status');
 
-         // routes para sa inventory
-    // index=listahan, show=tingnan, edit=baguhin lokasyon, update=i-save
-    // walang create at delete kasi yung inventory record ay
-    // awtomatikong ginagawa pag nagdagdag ng bagong product
-
+         // routes for inventory at stock movements
     // Inventory (only index, show, edit, update — no create/store/destroy)
     Route::resource('inventory', InventoryController::class)
          ->only(['index', 'show', 'edit', 'update']);
 
-        // routes para sa stock movements tas and index=listahan, create=form, store=i-save, show=tingnan yung detalye
-        // walang edit at delete kasi permanent yung bawat movement
-        // para sa audit trail, hindi pwedeng burahin o baguhin yung nakaraang movements
+       
          // Stock Movements (only index, create, store, show — no edit/update/destroy)
     Route::resource('stock-movements', StockMovementController::class)
          ->only(['index', 'create', 'store', 'show']);
