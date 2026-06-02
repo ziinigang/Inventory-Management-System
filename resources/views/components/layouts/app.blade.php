@@ -370,7 +370,7 @@
         <a href="{{ route('stock-movements.index') }}"
            class="nav-link {{ request()->routeIs('stock-movements.*') ? 'active' : '' }}">
             <span class="nav-icon"><i class="bi bi-arrow-left-right"></i></span>
-            Stock Movements
+            Stock-Movements
         </a>
 
         @if(auth()->user()->isAdmin())
