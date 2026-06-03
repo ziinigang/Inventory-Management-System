@@ -12,11 +12,11 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 COPY . .
 
-RUN cp .env.example .env
-
 RUN composer install --optimize-autoloader --no-dev --no-interaction --ignore-platform-reqs
 
-RUN php artisan key:generate --force
+# Generate a temporary .env only for the key:generate build step.
+# No database credentials are baked in — Railway injects those at runtime.
+RUN echo "APP_KEY=" > .env && php artisan key:generate --force
 
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
