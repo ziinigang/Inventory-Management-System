@@ -181,6 +181,18 @@
     const projected     = document.getElementById('projectedResult');
     const projectedQty  = document.getElementById('projectedQty');
 
+    // Update min attribute based on movement type
+    function updateMin() {
+        const type = document.querySelector('input[name="type"]:checked')?.value;
+        if (type === 'adjustment') {
+            qtyInput.min = '-9999';
+            qtyInput.placeholder = 'Use negative (e.g. -10) to reduce stock';
+        } else {
+            qtyInput.min = '1';
+            qtyInput.placeholder = '';
+        }
+    }
+
     function updatePreview() {
         const option  = productSelect.options[productSelect.selectedIndex];
         const stock   = parseInt(option.dataset.stock ?? 0);
@@ -194,9 +206,9 @@
             stockInfo.classList.remove('d-none');
 
             let newQty = stock;
-            if (type === 'in')         newQty = stock + Math.abs(qty);
-            else if (type === 'out')   newQty = stock - Math.abs(qty);
-            else if (type === 'adjustment') newQty = stock + qty;
+            if (type === 'in')                  newQty = stock + Math.abs(qty);
+            else if (type === 'out')            newQty = stock - Math.abs(qty);
+            else if (type === 'adjustment')     newQty = stock + qty;
 
             projectedQty.textContent = newQty;
             projectedQty.className   = newQty < 0 ? 'fs-6 text-danger fw-bold'
@@ -210,10 +222,15 @@
 
     productSelect.addEventListener('change', updatePreview);
     qtyInput.addEventListener('input', updatePreview);
-    document.querySelectorAll('input[name="type"]')
-            .forEach(r => r.addEventListener('change', updatePreview));
+    document.querySelectorAll('input[name="type"]').forEach(r => {
+        r.addEventListener('change', () => {
+            updateMin();
+            updatePreview();
+        });
+    });
 
-    // Trigger on page load if product pre-selected
+    // Trigger on page load
+    updateMin();
     if (productSelect.value) updatePreview();
     </script>
 
