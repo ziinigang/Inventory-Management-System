@@ -8,10 +8,10 @@ use App\Http\Controllers\Api\InventoryApiController;
 use App\Http\Controllers\Api\StockMovementApiController;
 
 // ─── Public routes (no token needed) ────────────────────────────────────────
-Route::post('/login',  [AuthApiController::class, 'login']);
+Route::post('/login', [AuthApiController::class, 'login']);
 
 // ─── Protected routes (Bearer token required) ────────────────────────────────
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum')->prefix('v1')->name('api.')->group(function () {
 
     // Auth
     Route::get('/me',      [AuthApiController::class, 'me']);
@@ -23,11 +23,11 @@ Route::middleware('auth:sanctum')->group(function () {
     // Suppliers — full CRUD
     Route::apiResource('suppliers', SupplierApiController::class);
 
-    // Inventories — no create/delete (managed via products + movements)
+    // Inventories — no create/delete
     Route::apiResource('inventories', InventoryApiController::class)
          ->only(['index', 'show', 'update']);
 
-    // Stock Movements — no edit/update/delete (immutable audit trail)
+    // Stock Movements — immutable audit trail
     Route::apiResource('stock-movements', StockMovementApiController::class)
          ->only(['index', 'store', 'show']);
 });

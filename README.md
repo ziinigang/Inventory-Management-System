@@ -173,9 +173,9 @@ Full API documentation available in `/docs/api.md`
 
 ## 🚀 Deployment
 
-**Live URL:** [https://your-deployment-link.com](https://your-deployment-link.com)
+**Live URL:** [http://inventory-system.site.je/](https://your-deployment-link.com)
 
-Deployed on **Railway** using MySQL as the production database.
+Deployed on **InfenityFree** using MySQL as the production database.
 
 ---
 
