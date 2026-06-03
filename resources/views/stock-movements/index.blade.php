@@ -135,12 +135,15 @@
                                 @endif
                             </td>
                             <td class="text-center">
-                                <span class="fw-bold
-                                    {{ $movement->type === 'out'
-                                       ? 'text-danger' : 'text-success' }}">
-                                    {{ $movement->type === 'out' ? '−' : '+' }}
-                                    {{ abs($movement->quantity) }}
-                                </span>
+                             @if($movement->type === 'out')
+                                <span class="fw-bold text-danger">− {{ abs($movement->quantity) }}</span>
+                            @elseif($movement->type === 'in')
+                                 <span class="fw-bold text-success">+ {{ abs($movement->quantity) }}</span>
+                            @else
+                              <span class="fw-bold {{ $movement->quantity < 0 ? 'text-danger' : 'text-success' }}">
+                           {{ $movement->quantity > 0 ? '+' : '' }}{{ $movement->quantity }}
+                              </span>
+                            @endif
                             </td>
                             <td>
                                 <small class="text-muted">
