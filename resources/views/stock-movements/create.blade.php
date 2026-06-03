@@ -125,7 +125,7 @@
                             <input type="number" name="quantity" id="qtyInput"
                                 class="form-control @error('quantity') is-invalid @enderror"
                                 value="{{ old('quantity', 1) }}"
-                                min="1"
+                                min="-9999"
                                 required>
                             <div class="form-text" id="qtyHint">
                                 Enter the number of units to add or remove.
