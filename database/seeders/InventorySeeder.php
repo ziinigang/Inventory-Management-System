@@ -19,7 +19,10 @@ class InventorySeeder extends Seeder
         ];
 
         foreach ($inventories as $inventory) {
-            Inventory::create($inventory);
+            Inventory::updateOrCreate(
+                ['product_id' => $inventory['product_id']], // find by this
+                ['quantity'   => $inventory['quantity'], 'location' => $inventory['location']] // update/create these
+            );
         }
     }
 }

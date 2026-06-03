@@ -1,8 +1,11 @@
 <x-layouts.app title="Dashboard">
+    
 
 @php
-    $hour = now()->hour;
-    $greeting = $hour < 12 ? 'Good morning' : ($hour < 17 ? 'Good afternoon' : 'Good evening');
+    $hour = now()->timezone('Asia/Manila')->hour;
+    $greeting = $hour < 12
+        ? 'Good morning'
+        : ($hour < 17 ? 'Good afternoon' : 'Good evening');
 @endphp
 
 {{-- Low stock banner --}}
@@ -72,9 +75,8 @@
                        style="color:#d97706"></i>
                 </div>
                 <div>
-                    <div class="stat-value"
-                         style="color:{{ $lowStockCount > 0 ? '#d97706' : '#0f172a' }}">
-                        {{ $lowStockCount }}
+                    <div class="stat-value {{ $lowStockCount > 0 ? 'text-warning' : 'text-dark' }}">
+                            {{ $lowStockCount }}
                     </div>
                     <div class="stat-label">Low Stock Items</div>
                 </div>
@@ -212,11 +214,10 @@
                                     </span>
                                 @endif
                             </td>
-                            <td class="text-center fw-semibold"
-                                style="color:{{ $m->type === 'out'
-                                       ? '#ef4444' : '#22c55e' }}">
-                                {{ $m->type === 'out' ? '−' : '+' }}
-                                {{ abs($m->quantity) }}
+                            <td class="text-center fw-semibold" 
+                                {{ $m->type === 'out' ? 'text-danger' : 'text-success' }}">
+                                     {{$m->type === 'out' ? '−' : '+' }}
+                                        {{ abs($m->quantity) }}
                             </td>
                             <td style="font-size:12px">
                                 {{ $m->user->name ?? '—' }}
@@ -273,10 +274,8 @@
                                 </div>
                             </td>
                             <td class="text-center">
-                                <span class="fw-bold"
-                                      style="color:{{ $inv->quantity === 0
-                                             ? '#ef4444' : '#f59e0b' }}">
-                                    {{ $inv->quantity }}
+                                <span class="fw-bold {{ $inv->quantity === 0 ? 'text-danger' : 'text-warning' }}">
+                                 {{ $inv->quantity }}
                                 </span>
                             </td>
                             <td class="text-center text-muted"
@@ -317,6 +316,17 @@
 {{-- Chart.js --}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
 </script>
+@php
+    $labelsJson = json_encode($chartData['labels']);
+    $inJson = json_encode($chartData['in']);
+    $outJson = json_encode($chartData['out']);
+
+    $stockJson = json_encode([
+        $stockStats['in_stock'],
+        $stockStats['low_stock'],
+        $stockStats['out_of_stock']
+    ]);
+@endphp
 <script>
 // ── Movement trend bar chart ────────────────────────────────────
 const movCtx = document.getElementById('movementChart').getContext('2d');
@@ -367,7 +377,7 @@ new Chart(statCtx, {
             data           : [
                 {{ $stockStats['in_stock'] }},
                 {{ $stockStats['low_stock'] }},
-                {{ $stockStats['out_of_stock'] }},
+                {{ $stockStats['out_of_stock'] }}
             ],
             backgroundColor: ['#22c55e', '#f59e0b', '#ef4444'],
             borderWidth    : 0,

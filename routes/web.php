@@ -12,8 +12,8 @@ use App\Http\Controllers\ReportController;
 
 // yung mga page na pwedeng buksan kahit hindi pa naka-login(public pages)
 // yung login page mismo ang nasa loob nito
-Route::middleware('guest')->group(function () {
-    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::middleware('guest')->group(function () { 
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login'); 
     Route::post('/login', [AuthController::class, 'login']);
 });
 

@@ -1,58 +1,199 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 📦 Inventory Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A web-based Inventory Management System built with **Laravel**, **MySQL**,
+and **Bootstrap 5**. The system helps businesses monitor products,
+track stock levels, manage suppliers, and generate inventory reports
+in real time.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 👨‍💻 Developers
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+| Name | Role | GitHub |
+|------|------|--------|
+| Fernando, Estifanie G. |  Frontend Developer | @httpaniii1 |
+| Molano, Zheena Collene V. | Backend Developer | @ziinigang |
+| Molina, Joseph Jr. R. | Full Stack Developer | @jooo-zip |
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 🔍 System Overview
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+The Inventory Management System provides the following core features:
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Authentication** — Secure login and logout with role-based access
+  (Admin and Staff roles)
+- **Products** — Full CRUD operations with SKU tracking, category
+  management, and low stock indicators
+- **Suppliers** — Supplier directory with supply history and
+  active/inactive status management
+- **Inventory** — Real-time stock level monitoring with color-coded
+  status indicators (In Stock / Low Stock / Out of Stock)
+- **Stock Movements** — Immutable audit trail for all stock changes
+  (Stock In, Stock Out, Adjustments) with user tracking
+- **Reports** — Export inventory, movement, and supplier data as
+  PDF, Excel (.xlsx), or CSV
+- **REST API** — Full RESTful API with token-based authentication
+  via Laravel Sanctum, testable with Postman
+- **Dashboard** — Live statistics, 7-day movement chart, stock
+  status donut chart, and low stock alerts
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+---
 
-## Agentic Development
+## 🛠️ Tech Stack
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+| Layer      | Technology                     |
+|------------|-------------------------------|
+| Backend    | PHP 8.x + Laravel 11          |
+| Frontend   | Blade Templates + Bootstrap 5  |
+| Database   | MySQL                          |
+| API Auth   | Laravel Sanctum                |
+| PDF Export | barryvdh/laravel-dompdf        |
+| Excel/CSV  | maatwebsite/laravel-excel      |
+| Charts     | Chart.js                       |
+| Version Control | Git + GitHub              |
 
+---
+
+## 🗄️ Database Design
+
+The system uses **5 tables** with the following relationships:
+
+**Relationships:**
+- `Supplier` → hasMany → `Products`
+- `Product`  → hasOne  → `Inventory`
+- `Product`  → hasMany → `StockMovements`
+- `User`     → hasMany → `StockMovements`
+
+---
+
+## ⚙️ Installation & Setup
+
+### Requirements
+- PHP >= 8.2
+- Composer
+- MySQL
+- Git
+
+### Steps
+
+**1. Clone the repository**
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/ziinigang/inventory-system.git
+cd inventory-system
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+**2. Install PHP dependencies**
+```bash
+composer install
+```
 
-## Contributing
+**3. Copy environment file**
+```bash
+cp .env.example .env
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+**4. Generate application key**
+```bash
+php artisan key:generate
+```
 
-## Code of Conduct
+**5. Configure your database**
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Edit `.env` and set your MySQL credentials:
+```env
+DB_DATABASE=inventory_db
+DB_USERNAME=root
+DB_PASSWORD=your_password
+```
 
-## Security Vulnerabilities
+**6. Run migrations and seeders**
+```bash
+php artisan migrate:fresh --seed
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+**7. Start the development server**
+```bash
+php artisan serve
+```
 
-## License
+**8. Visit the application**
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## 🔐 Default Login Credentials
+
+| Role  | Email                    | Password     |
+|-------|--------------------------|--------------|
+| Admin | admin@inventory.com      | password123  |
+| Staff | staff@inventory.com      | password123  |
+
+> ⚠️ Change these credentials immediately in a production environment.
+
+---
+
+## 🌐 API Usage
+
+The system includes a RESTful API. Authenticate first to get a token:
+
+```http
+POST /api/login
+Content-Type: application/json
+
+{
+    "email": "admin@inventory.com",
+    "password": "password123"
+}
+```
+
+Use the returned token as a Bearer token for all subsequent requests:
+
+```http
+GET /api/products
+Authorization: Bearer YOUR_TOKEN_HERE
+```
+
+**Available endpoints:**
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST   | /api/login | Get API token |
+| GET    | /api/products | List products |
+| POST   | /api/products | Create product |
+| GET    | /api/products/{id} | Get product |
+| PUT    | /api/products/{id} | Update product |
+| DELETE | /api/products/{id} | Delete product |
+| GET    | /api/suppliers | List suppliers |
+| POST   | /api/stock-movements | Record movement |
+| GET    | /api/inventories | List inventory |
+
+Full API documentation available in `/docs/api.md`
+
+---
+
+## 🚀 Deployment
+
+**Live URL:** [https://your-deployment-link.com](https://your-deployment-link.com)
+
+Deployed on **Railway** using MySQL as the production database.
+
+---
+
+## 📋 Features Checklist
+
+- ✅ Authentication (Login, Logout, Sessions, Password Hashing)
+- ✅ CRUD Operations (Products, Suppliers)
+- ✅ Database Relationships (One-to-Many, One-to-One)
+- ✅ RESTful API (GET, POST, PUT/PATCH, DELETE)
+- ✅ Blade Master Layout (x-layout, x-nav-link)
+- ✅ Middleware Protection (Admin routes, Guest restrictions)
+- ✅ Auto-Generated Reports (PDF, Excel, CSV)
+- ✅ GitHub Repository with commit history
+- ✅ Deployment on Railway
+
+---
+
+## 📄 License
+
+This project was developed as a Final Project for the subject
+**Web Development using Laravel** — Academic Year 2025–2026.

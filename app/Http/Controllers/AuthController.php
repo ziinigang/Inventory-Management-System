@@ -20,21 +20,21 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
+            $request->session()->regenerate(); // para maiwasan ang session fixation attacks
             return redirect()->intended('/dashboard')
                 ->with('success', 'Welcome back, ' . Auth::user()->name . '!');
         }
 
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+        ])->onlyInput('email'); // mag clear ang password field para sa security
     }
 
     public function logout(Request $request)
     {
         Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        $request->session()->invalidate(); // para ma-clear lahat ng session data
+        $request->session()->regenerateToken(); // para sa CSRF protection
         return redirect('/login')->with('success', 'You have been logged out.');
     }
 }

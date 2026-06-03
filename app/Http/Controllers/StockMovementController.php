@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Inventory;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Auth;
 
 class StockMovementController extends Controller
 {
@@ -122,7 +123,7 @@ class StockMovementController extends Controller
         // i-save na ang movement sa database
         StockMovement::create([
             'product_id' => $validated['product_id'],
-            'user_id'    => auth()->id(),
+            'user_id'    => Auth::id(),
             'type'       => $validated['type'],
             'quantity'   => $moveQty,
             'reason'     => $validated['reason'],

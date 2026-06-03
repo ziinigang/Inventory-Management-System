@@ -26,7 +26,7 @@ class Product extends Model
     }
 
     // A product has one inventory record
-    public function inventory(): HasOne
+    public function inventory()
     {
         return $this->hasOne(Inventory::class);
     }

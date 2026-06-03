@@ -32,8 +32,7 @@
 
 <div class="login-card">
     <div class="text-center mb-4">
-        <div class="brand-icon"><i class="bi bi-box-seam"></i></div>
-        <h4 class="fw-bold mt-2 mb-0">Inventory Management</h4>
+        <div class="brand-icon"><img src="{{ asset('images/logo.jpg') }}" alt="Inventory Logo"></i></div>
         <p class="text-muted small">Sign in to your account</p>
     </div>
 

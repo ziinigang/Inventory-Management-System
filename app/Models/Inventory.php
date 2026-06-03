@@ -14,8 +14,8 @@ class Inventory extends Model
     ];
 
     // An inventory record belongs to one product
-    public function product(): BelongsTo
+    public function product()
     {
-        return $this->belongsTo(Product::class);
+      return $this->belongsTo(Product::class);
     }
 }

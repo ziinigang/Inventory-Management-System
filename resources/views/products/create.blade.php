@@ -64,8 +64,8 @@
                                     required>
                                 <datalist id="category-list">
                                     <option value="Office Supplies">
-                                    <option value="Office Equipment">
-                                    <option value="Classroom Supplies">
+                                    <option value="Computer Accessories">
+                                    <option value="School Supplies">
                                     <option value="Cleaning Supplies">
                                     <option value="Electronics">
                                 </datalist>

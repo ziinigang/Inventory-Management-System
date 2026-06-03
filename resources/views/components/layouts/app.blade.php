@@ -61,15 +61,15 @@
         }
 
         .sidebar-brand .brand-icon {
-            width          : 32px; height: 32px;
-            background     : #3b82f6;
-            border-radius  : 8px;
-            display        : flex;
-            align-items    : center;
-            justify-content: center;
-            font-size      : 16px;
-            color          : white;
-            flex-shrink    : 0;
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+                }
+
+        .sidebar-brand .brand-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         .sidebar-nav {
@@ -325,14 +325,16 @@
 {{-- Mobile sidebar overlay --}}
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-{{-- ═══════════════ SIDEBAR ════════════════ --}}
+{{-- ═══════════════ SIDEBAR ════════════════ --}} 
 <aside class="sidebar" id="sidebar">
 
+    {{-- Brand --}} // 
     {{-- Brand --}}
     <a href="{{ route('dashboard') }}" class="sidebar-brand">
         <div class="brand-icon">
-            <i class="bi bi-box-seam"></i>
+            <img src="{{ asset('images/logo.jpg') }}" alt="Inventory Logo">
         </div>
+
         <span>Inventory MS</span>
     </a>
 
